@@ -1,3 +1,6 @@
+def CONTAINER_NAME="jenkins-pipeline"
+def CONTAINER_TAG="latest"
+
 pipeline {
     agent {
         docker {
@@ -13,6 +16,10 @@ pipeline {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
+        }
+        stage('Image Build'){
+                sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+                echo "Image build complete"
         }
         stage('Test') {
             steps {
