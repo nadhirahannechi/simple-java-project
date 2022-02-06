@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Image Build'){
              steps {
-                sh "docker build -t jenkins-pipeline:latest -t jenkins-pipeline --pull --no-cache ."
+                sh "docker --version"
                 echo "Image build complete"
              }
         }
