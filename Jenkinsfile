@@ -17,10 +17,6 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        stage('Initialize'){
-            def dockerHome = tool 'myDocker'
-            env.PATH = "${dockerHome}/bin:${env.PATH}"
-        }
         stage('Image Build'){
              steps {
                 sh "docker build -t jenkins-pipeline:latest -t jenkins-pipeline --pull --no-cache ."
