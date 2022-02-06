@@ -18,8 +18,10 @@ pipeline {
             }
         }
         stage('Image Build'){
+             steps {
                 sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
                 echo "Image build complete"
+             }
         }
         stage('Test') {
             steps {
