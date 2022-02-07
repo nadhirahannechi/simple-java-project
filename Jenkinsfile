@@ -13,25 +13,25 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    docker.build("vigneshsweekaran/hello-world:${TAG}")
+                    docker.build("nadhirahannechi/java-pipeline:${TAG}")
                 }
             }
         }
 	    stage('Pushing Docker Image to Dockerhub') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker_credential') {
-                        docker.image("vigneshsweekaran/hello-world:${TAG}").push()
-                        docker.image("vigneshsweekaran/hello-world:${TAG}").push("latest")
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        docker.image("nadhirahannechi/java-pipeline:${TAG}").push()
+                        docker.image("nadhirahannechi/java-pipeline:${TAG}").push("latest")
                     }
                 }
             }
         }
         stage('Deploy'){
             steps {
-                sh "docker stop hello-world | true"
-                sh "docker rm hello-world | true"
-                sh "docker run --name hello-world -d -p 9004:8080 vigneshsweekaran/hello-world:${TAG}"
+                sh "docker stop java-pipeline | true"
+                sh "docker rm java-pipeline | true"
+                sh "docker run --name java-pipeline -d -p 9004:8080 nadhirahannechi/java-pipeline:${TAG}"
             }
         }
     }
