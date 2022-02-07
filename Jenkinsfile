@@ -38,7 +38,8 @@ pipeline {
          stage("build image"){
              agent any
              steps {
-                 sh 'docker --version'
+                 sh "docker build -t jenkins-pipeline:latest  -t jenkins-pipeline --pull --no-cache ."
+                 echo "Image build complete"
              }
          }
      }
