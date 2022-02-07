@@ -17,7 +17,22 @@ pipeline {
                 }
             }
         }
-	   
+	    stage('Pushing Docker Image to Dockerhub') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_credential') {
+                        docker.image("vigneshsweekaran/hello-world:${TAG}").push()
+                        docker.image("vigneshsweekaran/hello-world:${TAG}").push("latest")
+                    }
+                }
+            }
+        }
+        stage('Deploy'){
+            steps {
+                sh "docker stop hello-world | true"
+                sh "docker rm hello-world | true"
+                sh "docker run --name hello-world -d -p 9004:8080 vigneshsweekaran/hello-world:${TAG}"
+            }
+        }
     }
 }
-          
