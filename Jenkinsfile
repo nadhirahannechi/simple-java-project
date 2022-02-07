@@ -5,9 +5,24 @@ pipeline {
         TAG = "${DATE}.${BUILD_NUMBER}"
     }
     stages {
-        stage ('Build') {
+        stage('Build') {
             steps {
-                sh 'mvn clean package'
+                    sh 'mvn -B -DskipTests clean package'
+                }
+        }
+        stage('Test') {
+            steps {
+                    sh 'mvn test'
+                }
+            post {
+                    always {
+                        Junit 'target/surefire-reports/*.xml'
+                    }
+                }
+        }
+        stage('Deliver') { 
+            steps {
+                sh './jenkins/scripts/deliver.sh' 
             }
         }
         stage('Docker Build') {
